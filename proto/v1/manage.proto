@@ -18,7 +18,7 @@ message GeneratePublicKeyResponse {
     // key id
     uint64 id = 1;
     // public key, that's needed to be added to your servers authorisation db
-    uint64 content = 2;
+    string content = 2;
 }
 
 
