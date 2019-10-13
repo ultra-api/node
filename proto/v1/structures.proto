@@ -26,7 +26,3 @@ enum NodeStatus {
     INACTIVE = 2;
     UNREACHABLE = 3;
 }
-
-message PublicKeyInfo {
-    string body = 1;
-}
