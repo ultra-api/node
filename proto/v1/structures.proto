@@ -1,0 +1,32 @@
+syntax = 'proto3';
+
+package ultra.node.v1.structures;
+
+// General information about application
+message NodeInfo {
+    // Node identifier
+    uint64 id = 1;
+
+    // Node host ip
+    string host = 2;
+
+    // Node host port
+    string port = 3;
+
+    // Creation date in RFC3339 format
+    string date_create = 4;
+
+    // Current application status
+    NodeStatus status = 5;
+}
+
+enum NodeStatus {
+    CREATING = 0;
+    ACTIVE = 1;
+    INACTIVE = 2;
+    UNREACHABLE = 3;
+}
+
+message PublicKeyInfo {
+    string body = 1;
+}

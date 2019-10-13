@@ -1,0 +1,64 @@
+syntax = 'proto3';
+
+package ultra.node.v1.manage;
+
+import "node/proto/v1/structures.proto";
+
+service ManageService {
+    rpc createNode (CreateNodeRequest) returns (CreateNodeResponse) {
+    }
+    rpc getPublicKey (GetPublicKeyRequest) returns (GetPublicKeyResponse) {
+    }
+}
+
+message GetPublicKeyRequest {
+    // Node id
+    uint64 node_id = 1;
+}
+
+message GetPublicKeyResponse {
+    oneof result {
+        structures.PublicKeyInfo publicKey = 1;
+        Error error = 2;
+    }
+
+    message Error {
+        Code code = 1;
+        string message = 2;
+
+        enum Code {
+            INTERNAL_ERROR = 0;
+            UNREACHABLE_ERROR = 1; // node is unreachable
+            OWNERSHIP_ERROR = 2; // node is not attached to customer
+        }
+    }
+}
+
+
+message CreateNodeRequest {
+    // Node host ip
+    string host = 1;
+
+    // Node host port
+    string port = 2;
+}
+
+message CreateNodeResponse {
+    oneof result {
+        structures.NodeInfo app = 1;
+        Error error = 2;
+    }
+
+    message Error {
+        Code code = 1;
+        string message = 2;
+
+        enum Code {
+            INTERNAL_ERROR = 0;
+            CONNECTION_ERROR = 1; // node unreachable
+            TIMEOUT_ERROR = 2; // node connection timeout
+            AUTH_ERROR = 3; // could not authenticate
+            REQUIREMENT_ERROR = 4; // did not pass hardware, software tests
+        }
+    }
+}
