@@ -7,40 +7,40 @@ import "node/proto/v1/structures.proto";
 service ManageService {
     rpc createNode (CreateNodeRequest) returns (CreateNodeResponse) {
     }
-    rpc getPublicKey (GetPublicKeyRequest) returns (GetPublicKeyResponse) {
+    rpc generatePublicKey (GeneratePublicKeyRequest) returns (GeneratePublicKeyResponse) {
     }
 }
 
-message GetPublicKeyRequest {
-    // Node id
-    uint64 node_id = 1;
+message GeneratePublicKeyRequest {
 }
 
-message GetPublicKeyResponse {
-    oneof result {
-        structures.PublicKeyInfo publicKey = 1;
-        Error error = 2;
-    }
-
-    message Error {
-        Code code = 1;
-        string message = 2;
-
-        enum Code {
-            INTERNAL_ERROR = 0;
-            UNREACHABLE_ERROR = 1; // node is unreachable
-            OWNERSHIP_ERROR = 2; // node is not attached to customer
-        }
-    }
+message GeneratePublicKeyResponse {
+    // key id
+    uint64 id = 1;
+    // public key, that's needed to be added to your servers authorisation db
+    uint64 content = 2;
 }
 
 
 message CreateNodeRequest {
+    message BasicAuthenticationCredentials {
+        // user - root, or user that can become root
+        string user = 1;
+        // password
+        string password = 2;
+    }
+
     // Node host ip
     string host = 1;
 
     // Node host port
     string port = 2;
+
+    // How to access node
+    oneof authentication_method {
+        BasicAuthenticationCredentials basic_authentication_credentials = 3;
+        uint64 public_key_id = 4;
+    }
 }
 
 message CreateNodeResponse {
@@ -57,8 +57,7 @@ message CreateNodeResponse {
             INTERNAL_ERROR = 0;
             CONNECTION_ERROR = 1; // node unreachable
             TIMEOUT_ERROR = 2; // node connection timeout
-            AUTH_ERROR = 3; // could not authenticate
-            REQUIREMENT_ERROR = 4; // did not pass hardware, software tests
+            REQUIREMENT_ERROR = 3; // did not pass hardware, software tests
         }
     }
 }
