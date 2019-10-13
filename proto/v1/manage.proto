@@ -68,5 +68,5 @@ message GetListRequest {
 }
 
 message GetListResponse {
-    repeated structures.NodeInfo list = 1;
+    repeated structures.NodeInfo node = 1;
 }
