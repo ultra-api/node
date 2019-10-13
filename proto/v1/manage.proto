@@ -1,0 +1,72 @@
+syntax = 'proto3';
+
+package ultra.node.v1.manage;
+
+import "node/proto/v1/structures.proto";
+
+service ManageService {
+    rpc createNode (CreateNodeRequest) returns (CreateNodeResponse) {
+    }
+    rpc generatePublicKey (GeneratePublicKeyRequest) returns (GeneratePublicKeyResponse) {
+    }
+    rpc getList (GetListRequest) returns (GetListResponse) {
+    }
+}
+
+message CreateNodeRequest {
+    message BasicAuthenticationCredentials {
+        // user - root, or user that can become root
+        string user = 1;
+        // password
+        string password = 2;
+    }
+
+    // Node host ip
+    string host = 1;
+
+    // Node host port
+    uint32 port = 2;
+
+    // How to access node
+    oneof authentication_method {
+        BasicAuthenticationCredentials basic_authentication_credentials = 3;
+        uint64 public_key_id = 4;
+    }
+}
+
+message CreateNodeResponse {
+    oneof result {
+        structures.NodeInfo node = 1;
+        Error error = 2;
+    }
+
+    message Error {
+        Code code = 1;
+        string message = 2;
+
+        enum Code {
+            INTERNAL_ERROR = 0;
+            CONNECTION_ERROR = 1; // node unreachable
+            TIMEOUT_ERROR = 2; // node connection timeout
+            REQUIREMENT_ERROR = 3; // did not pass hardware, software tests
+            NODE_AUTHENTICATION_ERROR = 4; // could not authenticate with the cred. provided
+        }
+    }
+}
+
+message GeneratePublicKeyRequest {
+}
+
+message GeneratePublicKeyResponse {
+    // key id
+    uint64 id = 1;
+    // public key, that's needed to be added to your servers authorisation db
+    string content = 2;
+}
+
+message GetListRequest {
+}
+
+message GetListResponse {
+    repeated structures.NodeInfo node = 1;
+}
