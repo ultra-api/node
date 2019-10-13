@@ -9,18 +9,9 @@ service ManageService {
     }
     rpc generatePublicKey (GeneratePublicKeyRequest) returns (GeneratePublicKeyResponse) {
     }
+    rpc getList (GetListRequest) returns (GetListResponse) {
+    }
 }
-
-message GeneratePublicKeyRequest {
-}
-
-message GeneratePublicKeyResponse {
-    // key id
-    uint64 id = 1;
-    // public key, that's needed to be added to your servers authorisation db
-    string content = 2;
-}
-
 
 message CreateNodeRequest {
     message BasicAuthenticationCredentials {
@@ -61,4 +52,21 @@ message CreateNodeResponse {
             NODE_AUTHENTICATION_ERROR = 4; // could not authenticate with the cred. provided
         }
     }
+}
+
+message GeneratePublicKeyRequest {
+}
+
+message GeneratePublicKeyResponse {
+    // key id
+    uint64 id = 1;
+    // public key, that's needed to be added to your servers authorisation db
+    string content = 2;
+}
+
+message GetListRequest {
+}
+
+message GetListResponse {
+    repeated structures.NodeInfo list = 1;
 }
