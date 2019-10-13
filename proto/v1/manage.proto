@@ -34,7 +34,7 @@ message CreateNodeRequest {
     string host = 1;
 
     // Node host port
-    string port = 2;
+    uint32 port = 2;
 
     // How to access node
     oneof authentication_method {
@@ -45,7 +45,7 @@ message CreateNodeRequest {
 
 message CreateNodeResponse {
     oneof result {
-        structures.NodeInfo app = 1;
+        structures.NodeInfo node = 1;
         Error error = 2;
     }
 
@@ -58,6 +58,7 @@ message CreateNodeResponse {
             CONNECTION_ERROR = 1; // node unreachable
             TIMEOUT_ERROR = 2; // node connection timeout
             REQUIREMENT_ERROR = 3; // did not pass hardware, software tests
+            NODE_AUTHENTICATION_ERROR = 4; // could not authenticate with the cred. provided
         }
     }
 }
