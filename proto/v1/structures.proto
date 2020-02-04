@@ -21,8 +21,10 @@ message NodeInfo {
 }
 
 enum NodeStatus {
-    CREATING = 0;
-    ACTIVE = 1;
-    INACTIVE = 2;
-    UNREACHABLE = 3;
+    UNKNOWN = 0;
+    INSTALLING = 1;
+    CONFIGURING = 2;
+    ACTIVE = 3;
+    ERROR = 4;
+    REMOVED = 5;
 }
